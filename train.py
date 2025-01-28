@@ -42,7 +42,7 @@ class DeepLearningModel(pl.LightningModule):
         self.log('val_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
         return {'val_loss': loss}
 
-    def validation_epoch_end(self, outputs):
+    def on_validation_epoch_end(self, outputs):
         avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
         tensorboard_logs = {'val_loss': avg_loss}
         return {'val_loss': avg_loss, 'log': tensorboard_logs}
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         curr_model = CFTNet()
     elif args.model == 'DCCTN':
         from Network import DCCTN
-        curr_model = DCCTN
+        curr_model = DCCTN()
     elif args.model == 'DATCFTNET':
         from Network import DATCFTNET
         curr_model = DATCFTNET()
